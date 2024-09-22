@@ -28,7 +28,7 @@ if __name__ == "__main__":
     dirpath = Path(dirpath)
 
     if args.outdir is None:
-        outdir = Path(f"/mnt/v/Dataset/PeopleSnapshot/instant_avatar/{args.subject}/")
+        outdir = dirpath
     else:
         outdir = Path(args.outdir) / args.subject
     os.makedirs(outdir, exist_ok=True)
@@ -72,15 +72,15 @@ if __name__ == "__main__":
     image_dir = outdir / "images"
     os.makedirs(image_dir, exist_ok=True)
 
-    # print("Write images to", image_dir)
-    # cap = cv2.VideoCapture(str(dirpath / f"{args.subject}.mp4"))
-    # frame_cnt = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
-    # for i in tqdm.trange(frame_cnt):
-    #     img_path = f"{image_dir}/image_{i:04d}.png"
-    #     ok, frame = cap.read()
-    #     if not ok: break
-    #     frame = cv2.undistort(frame, K, dist_coeffs)
-    #     cv2.imwrite(img_path, frame)
+    print("Write images to", image_dir)
+    cap = cv2.VideoCapture(str(dirpath / f"{args.subject}.mp4"))
+    frame_cnt = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+    for i in tqdm.trange(frame_cnt):
+        img_path = f"{image_dir}/image_{i:04d}.png"
+        ok, frame = cap.read()
+        if not ok: break
+        frame = cv2.undistort(frame, K, dist_coeffs)
+        cv2.imwrite(img_path, frame)
 
     # load masks
     mask_dir = outdir / "masks"
